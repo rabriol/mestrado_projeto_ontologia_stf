@@ -1,0 +1,15 @@
+<"&imdb;title/{$id}"> a mo:Movie .
+select id, title, production_year from title where kind_id = 1
+
+<"&:;title/{$id}"> a movieontology:Movie .
+select id, title from title
+
+sh Protege-5.0.0-beta-17/run.command
+tail -100f /usr/local/var/postgres/server.log
+psql -s imdb
+python imdbpy2sql.py -d ../../imdb_files/ -u 'postgres://brito:@localhost/imdb'
+mongod --dbpath juridicadb/
+lunchy start postgres
+
+
+Introdução à Computação para Ciências Exatas e Tecnologia

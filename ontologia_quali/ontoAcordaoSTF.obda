@@ -1,0 +1,69 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/stf/ontologies/2016/4/ontoAcordaoSTF#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace#
+xsd:		http://www.w3.org/2001/XMLSchema#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+
+[SourceDeclaration]
+sourceUri	AcordaosDS
+connectionUrl	jdbc:mysql://localhost/ACORDAOS
+username	root
+password	
+driverClass	com.mysql.jdbc.Driver
+
+[MappingDeclaration] @collection [[
+mappingId	m_acordao_type
+target		:{ID} a :Acordao . 
+source		select ID from ACORDAO
+
+mappingId	m_acordao_cita
+target		:{ID_ACORDAO} :Cita :{ID_ACORDAO_CITADO} . 
+source		select ID_ACORDAO, ID_ACORDAO_CITADO from CITACAO
+
+mappingId	m_acordao_temIdentificador
+target		:{ID} :TemIdentificador {ID}^^xsd:string . 
+source		select ID from ACORDAO
+
+mappingId	m_relator_type
+target		:relator/{ID} a :Relator ; :TemNome {NOME}^^xsd:string . 
+source		select ID, NOME from RELATOR
+
+mappingId	m_acordao_temRelator
+target		:{ID} :TemRelator :relator/{ID_RELATOR} . 
+source		select ID, ID_RELATOR from ACORDAO
+
+mappingId	m_advogado_type
+target		:advogado/{ID} a :Advogado ; :TemNome {NOME}^^xsd:string . 
+source		select ID, NOME from ADVOGADO
+
+mappingId	m_acordao_advogado
+target		:{ID_ACORDAO} :TemAdvogado :advogado/{ID_ADVOGADO} . 
+source		select ID_ACORDAO, ID_ADVOGADO from PARTES_ADVOGADO
+
+mappingId	m_acordao_temDecisao
+target		:{ID} :TemDecisao {DECISAO}^^xsd:string . 
+source		select ID, DECISAO from ACORDAO
+
+mappingId	m_acordao_similar
+target		:{ID_ACORDAO} :EhSimilar :{ID_ACORDAO_SIMILAR} . 
+source		select ID_ACORDAO, ID_ACORDAO_SIMILAR from SIMILAR
+
+mappingId	m_procurador_type
+target		:procurador/{ID} a :Procurador ; :TemNome {NOME}^^xsd:string . 
+source		select ID, NOME from PROCURADOR
+
+mappingId	m_acordao_temProcurador
+target		:{ID_ACORDAO} :TemProcurador :procurador/{ID_PROCURADOR} . 
+source		select ID_ACORDAO, ID_PROCURADOR from PARTES_PROCURADOR
+
+mappingId	m_acordao_temLegislacao
+target		:{ID_ACORDAO} :TemLegislacao :{ID_LEGISLACAO} . 
+source		select ID_ACORDAO, ID_LEGISLACAO from ACORDAO_LEGISLACAO
+
+mappingId	m_legislacao_type
+target		:{ID} a :Legislacao ; :TemIdentificador {ID}^^xsd:string . 
+source		select ID, TIPO, DESCRICAO, ANO from LEGISLACAO
+]]
+

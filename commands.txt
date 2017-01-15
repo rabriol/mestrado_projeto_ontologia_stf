@@ -1,0 +1,50 @@
+--------
+MongoDB
+--------
+mongo
+mongod --dbpath juridicadb/
+
+------
+MySQL
+------
+mysql.server start
+mysql.server stop
+mysql -h localhost -u root
+
+--------
+Protégé
+--------
+h mestrado/Protege-5.0.0-beta-17/run.sh
+
+---------------------------------------
+Queries utilizadas na Qualificação
+---------------------------------------
+PREFIX stf: <http://www.semanticweb.org/stf/ontologies/2016/4/ontoAcordaoSTF#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?nome_acordao ?nome_acordao
+WHERE {
+	?acordao rdf:type stf:Acordao.
+	?acordao stf:TemIdentificador ?nome_acordao.
+	?acordao stf:Cita ?acordao_citado.
+	?acordao_citado stf:TemIdentificador ?nome_acordao_citado.
+
+	FILTER(?nome_acordao_citado = "ADC 16"^^xsd:string)
+}
+
+---------
+PREFIX stf: <http://www.semanticweb.org/stf/ontologies/2016/4/ontoAcordaoSTF#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT distinct ?nome_advogado
+WHERE {
+	?relator rdf:type stf:Relator.
+	?relator stf:TemNome ?nome_relator.
+	?acordao stf:TemRelator ?relator.
+	?acorado stf:TemAdvogado ?advogado.
+	?advogado stf:TemNome ?nome_advogado
+
+
+	FILTER(?nome_relator = "TEORI ZAVASCKI"^^xsd:string)
+
+}
